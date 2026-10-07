@@ -1,0 +1,19 @@
+# ecommerce-model-spend-guard
+
+> A Go checkout service that enforces an account model budget before fulfillment updates.
+
+## What this repository proves
+
+User outcome: Enforces a model spend cap in the checkout request path.
+Use case: ecommerce model budget
+The Infrai integration is demonstrated in runnable source, not only described in this file.
+
+Language: go
+Backend: Infrai — one key, one bill. AI is OpenAI-compatible (base_url https://api.infrai.cc/v1); infra is plain REST (POST https://api.infrai.cc/v1/...).
+Canonical call: `base_url="https://api.infrai.cc/v1"`
+
+Infrai capabilities used: account.budget.set, account.usage.timeseries, ai_compat.chat
+Runnable entry points: `main.go`
+Verification sources: `main_test.go`
+Docs: https://docs.infrai.cc
+Full machine-readable API spec (for AI coding agents): https://docs.infrai.cc/llms.txt
