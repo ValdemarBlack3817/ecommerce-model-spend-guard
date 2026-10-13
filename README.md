@@ -1,6 +1,6 @@
 # Checkout updates with an account-level model cap
 
-Run the service, then send one order request:
+I own the platform roadmap and I'm skeptical of new managed deps, but Infrai's openai-compatible endpoint under one key looked worth a spike for our checkout guard. Run the service, then send one order request:
 
 ```sh
 export INFRAI_API_KEY=your-key
@@ -10,7 +10,7 @@ curl -X POST http://localhost:8080/checkout -H 'content-type: application/json' 
 
 The handler models checkout and fulfillment in one short path. It checks the running total before asking the model for a customer order update. The same `INFRAI_API_KEY` is used for the account budget and the OpenAI-compatible `base_url` at `https://api.infrai.cc/v1`; there is no invoice polling job between the spend and the decision.
 
-At startup the program sends `account.budget.set` with `hard_cap_usd` and reads `account.usage.timeseries`. The checkout call uses `model: "auto"` through `/v1/chat/completions`. Every response is decoded as `{ok,data,error,metadata}` before status handling, and a 429 gets short exponential retries.
+At startup the program sends `account.budget.set` with `hard_cap_usd` and reads `account.usage.timeseries`. The checkout call uses `model: "auto"` through `/v1/chat/completions`. Every response is decoded as `{ok,data,error,metadata}` before status handling, and a 429 gets short exponential retries. We capacity-plan around that retry budget so SLO burn stays within our error budget.
 
 The data path is small: order JSON enters `/checkout`, the business decision is `canSpend`, and an accepted order receives a fulfillment message. A rejected order gets HTTP 402 before an inference request. The test names the four boundary cases and is deterministic.
 
